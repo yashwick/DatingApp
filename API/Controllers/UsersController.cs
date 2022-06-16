@@ -19,7 +19,7 @@ namespace API.Controllers
         {
              return await _context.Users.ToListAsync();
         }
-        //api/user/3
+        //api/users/3
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>>GetUsers(int id)//Could use lists instead but lists offer too many features so let's just go with IEnumarable
         {

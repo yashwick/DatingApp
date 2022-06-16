@@ -28,7 +28,7 @@ namespace API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {//Orderr doesn't matter in here
 
             //Lambda Expression
             services.AddDbContext<DataContext>(options =>
@@ -41,11 +41,12 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
+            services.AddCors(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        {//Order does matter in here
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,6 +57,13 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            //To our API from Angular application
+            //These are called middle wear
+            //I don't know why but I haven't recieve ay of these errors 
+            //x refers to the CORS policy here
+            //This makes the error go away as cross origin resource sharing in between 4200 and 5001,5000 is possible 
 
             app.UseAuthorization();
 
