@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Extensions;
+using API.Interfaces;
+using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -28,20 +34,15 @@ namespace API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {//Orderr doesn't matter in here
-
-            //Lambda Expression
-            services.AddDbContext<DataContext>(options =>
-            {
-                //options.UseSqlite("Connection String");//add this configuration inside the appsettings.Development.json file
-                options.UseSqlite( _config.GetConnectionString("DefaultConnection"));
-            });
+        {//Order doesn't matter in here
+            services.AddApplicationServices(_config);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
-            services.AddCors(); 
+            services.AddCors();
+            services.AddIdentityServices(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +59,14 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
             //To our API from Angular application
-            //These are called middle wear
-            //I don't know why but I haven't recieve ay of these errors 
+            //These are called middleware
+            //I don't know why but I haven't recieved any of these errors 
             //x refers to the CORS policy here
-            //This makes the error go away as cross origin resource sharing in between 4200 and 5001,5000 is possible 
+            //This makes the error go away as cross origin resource sharing in between 4200 and 5001,5000 is made possible 
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
