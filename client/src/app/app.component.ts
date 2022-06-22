@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/user';
+import { AccountsService } from './_services/accounts.service';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +17,28 @@ export class AppComponent implements OnInit {
    //Fetching data in the constructor is possible but it's considered a bit too early  
    //so we can use angular life cycle event, instead 
    //Which do have onInit()   
-   constructor(private http: HttpClient){}
+   constructor( private accountService: AccountsService){}
   ngOnInit() {
     //this. keyword is needed to access any property inside the class so basically http is inside the class AppComponent
-   this.getUsers();
-    
+   //this.getUsers();
+   this.setCurrentUser();    
   }
-  getUsers(){
-    //http get returns an observarable so when returning data this person is telling to always subscribe coz unless we subscribe, this lazy http get won't return what we need
-    this.http.get('https://localhost:5001/api/users').subscribe(response=>{
-      this.users = response;
-    },error =>{
-      console.log(error);
-    }
-    )
-    //CORS refer to Cross Origin Resource sharing: blocked by CORS policy is al that the person doiing the course did get bt I wn't aparantly get that. 
-    //he gets it as the ngular runs on port 4200 while .Net runs on port 5001 or 5000
-    //Unless this is said to be OK, You'll always receive an error
-    //so let's just add Cors to services in StartUp. 
+  setCurrentUser(){
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    this.accountService.setCurrentUser(user);
   }
+  // getUsers(){
+  //   //http get returns an observarable so when returning data this person is telling to always subscribe coz unless we subscribe, this lazy http get won't return what we need
+  //   this.http.get('https://localhost:5001/api/users').subscribe(response=>{
+  //     this.users = response;
+  //   },error =>{
+  //     console.log(error);
+  //   }
+  //   )
+  //   //CORS refer to Cross Origin Resource sharing: blocked by CORS policy is al that the person doiing the course did get bt I wn't aparantly get that. 
+  //   //he gets it as the ngular runs on port 4200 while .Net runs on port 5001 or 5000
+  //   //Unless this is said to be OK, You'll always receive an error
+  //   //so let's just add Cors to services in StartUp. 
+  // }
 
 }

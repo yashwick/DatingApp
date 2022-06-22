@@ -1,5 +1,8 @@
-<p>{{title}}</p>
-<br>
-<ul>
-    <li *ngFor="let user of users">{{user.id}} : {{user.userName}}</li>
-</ul>
+<app-nav></app-nav><!-- This is how we add a component to another component's html -->
+<!-- <p>{{title}}</p>This is how we get the variables from ts to it's html -->
+<div class="dontainer" style = "margin-top: 100px;">
+    <!-- <ul>
+        <li *ngFor="let user of users">{{user.id}} : {{user.userName}}</li>
+    </ul> -->
+    <app-home></app-home>
+</div>
