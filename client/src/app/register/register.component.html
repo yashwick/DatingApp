@@ -14,8 +14,8 @@
             <option *ngFor="let user of usersFromHomeComponent" [value] ="user.userName">{{user.userName}}</option>
         </select>
     </div> -->
-    <div class="form-group tex t-center">
-        <button class="btn btn-success mr-2" type="submit">Register</button>
+    <div class="form-group text-center ">
+        <button class="btn btn-success mr-2" type="submit" >Register</button>
         <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancel</button><!--When the button is clicked we need to change the registerMode in the home component to false-->
     </div>
 </form>   

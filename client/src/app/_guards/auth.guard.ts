@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AccountsService } from '../_services/accounts.service';
 
-@Injectable({
+@Injectable({//We are not going to inject this to anywhere but will keep this as it is since it's auto generated
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {

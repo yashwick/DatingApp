@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
     console.log(this.model);
     this.accountServices.register(this.model).subscribe(response => {
       console.log(response);
-      this.cancel();
+     // this.cancel();
     }, error => {
       console.log(error);
       this.toastr.error(error.error);
@@ -30,6 +30,6 @@ export class RegisterComponent implements OnInit {
   }
   cancel() {
     console.log('cancelled');
-    this.cancelRegister.emit(false);//When the buton is clicked false will be emitted
+    this.cancelRegister.emit(false);//When the button is clicked false will be emitted
   }
 }

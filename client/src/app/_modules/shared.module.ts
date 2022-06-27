@@ -10,7 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CommonModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom'
     })
   ],
   exports: [

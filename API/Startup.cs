@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Extensions;
 using API.Interfaces;
+using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -48,12 +49,15 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {//Order does matter in here
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();//This is used to handle errors so that we can use only this code to handle all the exceptions where as in the old days we had to consider keeping try catch for all the end points 
+            //     //server exeception in the postman willnot occur if this is not there coz this what is responsible for returning that to us[Unhandled exceptions]In old days all the end points were wrapped with try catch however now creating a middleware for ths is enough
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
+            // }
+
+            app.UseMiddleware<ExceptionMiddleware>();//so the middleware that we have created is used here in a global way
 
             app.UseHttpsRedirection();
 

@@ -27,21 +27,22 @@ export class NavComponent implements OnInit {
       console.log(response);
       //this.loggedIn = true;
       this.router.navigateByUrl('/members');
-    }, error => {
-      console.log(error);
-      this.toastr.error(error.error);
+      // }, error => {
+      //   console.log(error);
+      //   this.toastr.error(error.error);
+      // 
     })
-  
+
   }
 
-  logout(){
+  logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
     //this.loggedIn = false;
   }
   // getCurrentUser(){//All the things we've done here could be done with currentUser$  
   //   this.accountService.currentUser$.subscribe(user=>{
-  //     //this.loggedIn = !!user;
+  //     //this.loggedIn = !!user; 
   //   },error =>{
   //     console.log(error);
   //   })
