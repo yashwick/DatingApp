@@ -1,34 +1,42 @@
-using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace API.Controllers
-{
+namespace API.Controllers 
+{ 
+    [Authorize]
     // [ApiController]
     // [Route("api/[controller]")]
     //When derivd,inherited from BaseApiController No longer need to add the above
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+       
+        // public UsersController(DataContext context)Instead of this we used the line below 
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
-        [AllowAnonymous]//this will make all the records accessible
+        //[AllowAnonymous]//this will make all the records accessible
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>>GetUsers()//Could use lists instead but lists offer too many features so let's just go with IEnumarable
+        public async Task<ActionResult<IEnumerable<MemberDto>>>GetUsers()//Could use lists instead but lists offer too many features so let's just go with IEnumarable
         {
-             return await _context.Users.ToListAsync();
+            var users = await _userRepository.GetUsersAsync();
+            var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
+            return Ok(usersToReturn);
         }
         //api/users/3
-        [Authorize]//when this is put you can't access the records without the token
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>>GetUsers(int id)//Could use lists instead but lists offer too many features so let's just go with IEnumarable
+        //[Authorize]//when this is put you can't access the records without the token
+        [HttpGet("{username}")] 
+        public async Task<ActionResult<MemberDto>>GetUser(string username)//Could use lists instead but lists offer too many features so let's just go with IEnumarable
         {
-             var user =_context.Users.FindAsync(id);
-             return await user;
+             var user = await _userRepository.GetUserByUsernameAsync(username);
+            // return  _mapper.Map<MemberDto>(user);
         }
     }
 }

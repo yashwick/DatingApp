@@ -8,6 +8,6 @@ namespace API.Data
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<AppUser> Users { get; set; }//Table inside our database is called 'Users'
+        public DbSet<AppUser> Users { get; set; }//Table inside our database is called 'Users'; with this what will get created is a publicly accessible table
     }
 }
