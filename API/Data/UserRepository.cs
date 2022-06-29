@@ -31,7 +31,7 @@ namespace API.Data
         {
             return await _context.Users
                .Where(x => x.UserName == username)
-               .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+               .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)//AutoMapper Queriable extensions
                .SingleOrDefaultAsync();
         }
 
@@ -69,9 +69,6 @@ namespace API.Data
             _context.Entry(user).State = EntityState.Modified;//adding a flag
         }
 
-        Task<MemberDto> IUserRepository.GetMemberAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

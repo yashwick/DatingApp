@@ -33,10 +33,11 @@ namespace API.Controllers
         //api/users/3
         //[Authorize]//when this is put you can't access the records without the token
         [HttpGet("{username}")] 
-        public async Task<ActionResult<MemberDto>>GetUser(string username)//Could use lists instead but lists offer too many features so let's just go with IEnumarable
+        public async Task<ActionResult<MemberDto>>GetUser (string username)//Could use lists instead but lists offer too many features so let's just go with IEnumarable
         {
-             var user = await _userRepository.GetUserByUsernameAsync(username);
+             //var user = await _userRepository.GetUserByUsernameAsync(username);
             // return  _mapper.Map<MemberDto>(user);
+            return await _userRepository.GetMemberAsync(username);
         }
     }
 }
